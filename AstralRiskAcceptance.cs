@@ -19,7 +19,7 @@ namespace Astrum
         {
             typeof(WebRequest).GetMethods().ToList().ForEach(method =>
             {
-                if (method.Name == "CreateHttp")
+                if (method.Name == nameof(WebRequest.CreateHttp))
                 {
                     if (method.GetParameters()[0].ParameterType == typeof(string))
                         HarmonyInstance.Patch(method, typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod());
@@ -28,7 +28,7 @@ namespace Astrum
 
             typeof(UnityWebRequest).GetMethods().ToList().ForEach(method =>
             {
-                if (method.Name == "Get")
+                if (method.Name == nameof(UnityWebRequest.Get))
                 {
                     if (method.GetParameters()[0].ParameterType == typeof(string))
                         HarmonyInstance.Patch(method, typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod());

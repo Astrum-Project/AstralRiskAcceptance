@@ -17,23 +17,41 @@ namespace Astrum
 
         public override void OnApplicationStart()
         {
-            typeof(WebRequest).GetMethods().ToList().ForEach(method =>
-            {
-                if (method.Name == nameof(WebRequest.CreateHttp))
-                {
-                    if (method.GetParameters()[0].ParameterType == typeof(string))
-                        HarmonyInstance.Patch(method, typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod());
-                }
-            });
+            TryHook("WebRequest::CreateHttp (Uri)",
+                typeof(WebRequest).GetMethod(nameof(WebRequest.CreateHttp), new Type[1] { typeof(Uri) }),
+                typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_Uri), PrivateStatic).ToNewHarmonyMethod()
+            );
 
-            typeof(UnityWebRequest).GetMethods().ToList().ForEach(method =>
+            TryHook("UnityWebRequest::Get (String)",
+                typeof(UnityWebRequest).GetMethod(nameof(UnityWebRequest.Get), new Type[] { typeof(string) }),
+                typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod()
+            );
+
+            TryHook("VRChatUtilityKit::EndEmmCheck",
+                AppDomain.CurrentDomain.GetAssemblies()
+                    .FirstOrDefault(x => x.GetName().Name == "VRChatUtilityKit")
+                    .GetTypes()
+                    .FirstOrDefault(x => x.Name == "VRCUtils")
+                    .GetProperty("AreRiskyFunctionsAllowed")
+                    .GetSetMethod(true),
+                typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_bool), PrivateStatic).ToNewHarmonyMethod()
+            );
+        }
+
+        private void TryHook(string name, MethodInfo method, HarmonyLib.HarmonyMethod pre, HarmonyLib.HarmonyMethod post = null)
+        {
+            try
             {
-                if (method.Name == nameof(UnityWebRequest.Get))
+                if (method is null)
                 {
-                    if (method.GetParameters()[0].ParameterType == typeof(string))
-                        HarmonyInstance.Patch(method, typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod());
+                    MelonLogger.Msg("Skipping " + name);
+                    return;
                 }
-            });
+
+                HarmonyInstance.Patch(method, pre, post);
+                MelonLogger.Msg("Hooked " + name);
+            } 
+            catch { MelonLogger.Warning("Failed to hook " + name); }
         }
 
         private static void Prehook_0_string(ref string __0)
@@ -41,5 +59,13 @@ namespace Astrum
             if (__0.ToLower().Contains("riskyfuncs"))
                 __0 = "https://raw.githubusercontent.com/xKiraiChan/xKiraiChan/master/allowed.txt";
         }
+
+        private static void Prehook_0_Uri(ref Uri __0)
+        {
+            if (__0.AbsoluteUri.ToLower().Contains("riskyfuncs"))
+                __0 = new Uri("https://raw.githubusercontent.com/xKiraiChan/xKiraiChan/master/allowed.txt");
+        }
+
+        private static void Prehook_0_bool(ref bool __0) => __0 = true;
     }
 }

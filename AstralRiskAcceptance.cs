@@ -5,7 +5,7 @@ using System.Net;
 using System.Reflection;
 using UnityEngine.Networking;
 
-[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.1.0", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
+[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.2.0", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonColor(ConsoleColor.DarkMagenta)]
 

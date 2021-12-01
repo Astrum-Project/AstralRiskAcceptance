@@ -5,7 +5,7 @@ using System.Net;
 using System.Reflection;
 using UnityEngine.Networking;
 
-[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.2.2", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
+[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.2.3", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonColor(ConsoleColor.DarkMagenta)]
 
@@ -23,19 +23,26 @@ namespace Astrum
             );
 
             TryHook("UnityWebRequest::Get (String)",
-                typeof(UnityWebRequest).GetMethod(nameof(UnityWebRequest.Get), new Type[] { typeof(string) }),
+                typeof(UnityWebRequest).GetMethod(nameof(UnityWebRequest.Get), new Type[1] { typeof(string) }),
                 typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod()
             );
 
-            Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetName().Name == "VRChatUtilityKit");
-            if (asm != null)
-                TryHook("VRChatUtilityKit::set_AreRiskyFunctionsAllowed",
-                    asm.GetTypes()
-                    .FirstOrDefault(x => x.Name == "VRCUtils")
-                    .GetProperty("AreRiskyFunctionsAllowed")
-                    .GetSetMethod(true),
-                    typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_bool), PrivateStatic).ToNewHarmonyMethod()
-                );
+            try
+            {
+                Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(x => x.GetName().Name == "VRChatUtilityKit");
+                if (asm != null)
+                    TryHook("VRChatUtilityKit::set_AreRiskyFunctionsAllowed",
+                        asm.GetTypes()
+                        .FirstOrDefault(x => x.Name == "VRCUtils")
+                        .GetProperty("AreRiskyFunctionsAllowed")
+                        .GetSetMethod(true),
+                        typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_bool), PrivateStatic).ToNewHarmonyMethod()
+                    );
+            } 
+            catch
+            {
+                MelonLogger.Warning("An exception occured whilst trying to patch VRChatUtilityKit::set_AreRiskyFunctionsAllowed");
+            }
         }
 
         private void TryHook(string name, MethodInfo method, HarmonyLib.HarmonyMethod pre, HarmonyLib.HarmonyMethod post = null)

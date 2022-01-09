@@ -1,11 +1,13 @@
-﻿using MelonLoader;
+﻿#pragma warning disable CS0618 // Type or member is obsolete
+
+using MelonLoader;
 using System;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using UnityEngine.Networking;
 
-[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.2.3", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
+[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.3.0", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonColor(ConsoleColor.DarkMagenta)]
 
@@ -20,6 +22,11 @@ namespace Astrum
             TryHook("WebRequest::CreateHttp (Uri)",
                 typeof(WebRequest).GetMethod(nameof(WebRequest.CreateHttp), new Type[1] { typeof(Uri) }),
                 typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_Uri), PrivateStatic).ToNewHarmonyMethod()
+            );
+
+            TryHook("WebClient::DownloadString",
+                typeof(WebClient).GetMethod(nameof(WebClient.DownloadString), new Type[1] { typeof(string) }),
+                typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod()
             );
 
             TryHook("UnityWebRequest::Get (String)",

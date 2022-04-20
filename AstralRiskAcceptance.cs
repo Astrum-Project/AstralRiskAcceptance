@@ -28,7 +28,7 @@ namespace Astrum
             
             TryHook("VRC.Core.ApiWorld.tags",
                 typeof(VRC.Core.ApiWorld).GetProperty(nameof(VRC.Core.ApiWorld.tags)).GetSetMethod(), 
-                typeof(AstralRiskAcceptance).GetMethod(nameof(hook_0_Tags), PrivateStatic).ToNewHarmonyMethod()
+                typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_Tags), PrivateStatic).ToNewHarmonyMethod()
             );
         }
 
@@ -76,6 +76,6 @@ namespace Astrum
                 __0 = new Uri("https://raw.githubusercontent.com/xKiraiChan/xKiraiChan/master/allowed.txt");
         }
 
-        private static void hook_0_Tags(ref List<string> __0) => __0 = new List<string>();
+        private static void Prehook_0_Tags(ref List<string> __0) => __0 = new List<string>();
     }
 }

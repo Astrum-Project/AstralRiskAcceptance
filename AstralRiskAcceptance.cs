@@ -5,7 +5,7 @@ using System.Net;
 using System.Reflection;
 using VRC.Core;
 
-[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.5.1", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
+[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.5.0", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonColor(ConsoleColor.DarkMagenta)]
 

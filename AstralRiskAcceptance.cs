@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
+using VRC.Core;
 
 [assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.5.1", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
 [assembly: MelonGame("VRChat", "VRChat")]
@@ -26,8 +27,8 @@ namespace Astrum
                 typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod()
             );
             
-            TryHook("VRC.Core.ApiWorld.tags",
-                typeof(VRC.Core.ApiWorld).GetProperty(nameof(VRC.Core.ApiWorld.tags)).GetSetMethod(), 
+            TryHook("ApiWorld.tags",
+                typeof(ApiWorld).GetProperty(nameof(ApiWorld.tags)).GetSetMethod(), 
                 typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_Tags), PrivateStatic).ToNewHarmonyMethod()
             );
         }

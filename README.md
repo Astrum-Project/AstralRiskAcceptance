@@ -14,3 +14,4 @@ Create an [issue](https://github.com/Astrum-Project/AstralRiskAcceptance/issues/
 - [StandaloneThirdPerson](https://github.com/gompoc/VRChatMods/tree/master/StandaloneThirdPerson) (gompoc)
 - [VRChatUtilityKit](https://github.com/loukylor/VRC-Mods/tree/main/VRChatUtilityKit) (loukylor)
 - [TeleporterVR](https://github.com/MintLily/VRChat-TeleporterVR) (KortyBoi/MintLily)
+- [ReModCE](https://github.com/RequiDev/ReModCE) (RequiDev)

@@ -5,7 +5,7 @@ using System.Net;
 using System.Reflection;
 using VRC.Core;
 
-[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.5.0", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
+[assembly: MelonInfo(typeof(Astrum.AstralRiskAcceptance), "AstralRiskAcceptance", "0.6.0", downloadLink: "github.com/Astrum-Project/AstralRiskAcceptance")]
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonColor(ConsoleColor.DarkMagenta)]
 
@@ -27,9 +27,9 @@ namespace Astrum
                 typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_string), PrivateStatic).ToNewHarmonyMethod()
             );
             
-            TryHook("ApiWorld.tags",
-                typeof(ApiWorld).GetProperty(nameof(ApiWorld.tags)).GetSetMethod(), 
-                typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_Tags), PrivateStatic).ToNewHarmonyMethod()
+            TryHook("RoomManager.Method_Public_Static_Boolean_ApiWorld_ApiWorldInstance_String_Int32_0",
+                typeof(RoomManager).GetMethod(nameof(RoomManager.Method_Public_Static_Boolean_ApiWorld_ApiWorldInstance_String_Int32_0)), 
+                typeof(AstralRiskAcceptance).GetMethod(nameof(Prehook_0_ApiWorld), PrivateStatic).ToNewHarmonyMethod()
             );
         }
 
@@ -77,6 +77,10 @@ namespace Astrum
                 __0 = new Uri("https://raw.githubusercontent.com/xKiraiChan/xKiraiChan/master/allowed.txt");
         }
 
-        private static void Prehook_0_Tags(ref List<string> __0) => __0 = new List<string>();
+        private static void Prehook_0_ApiWorld(ref ApiWorld __0)
+        {
+            __0.name = "";
+            __0.tags = new List<string>();
+        }
     }
 }

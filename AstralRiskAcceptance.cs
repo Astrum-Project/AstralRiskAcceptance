@@ -80,7 +80,7 @@ namespace Astrum
         private static void Prehook_0_ApiWorld(ref ApiWorld __0)
         {
             __0.name = "";
-            __0.tags = new List<string>();
+            __0.tags = new();
         }
     }
 }
